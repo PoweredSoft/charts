@@ -43,11 +43,6 @@ affinity: {}
 
 cronSchedule: 0 0 * * *
 
-pvc:
-  enabled: false
-  size: 85gi
-  storageClass: 
-
 appSettings:
   MySql:
     ConnectionString: 
