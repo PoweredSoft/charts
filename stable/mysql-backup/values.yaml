@@ -71,7 +71,6 @@ appSettings:
     Enabled: false
     ConnectionString:
     ExistingSecret:
-    ExistingSecretKey: connectionString
   Physical:
     Enabled: false
   Slack:
