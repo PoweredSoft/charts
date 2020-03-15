@@ -6,7 +6,7 @@
 image:
   repository: poweredsoft/docker-mysql-backup
   pullPolicy: IfNotPresent
-  image: latest
+  tag: latest
 
 imagePullSecrets: []
 nameOverride: ""
@@ -43,13 +43,28 @@ affinity: {}
 
 cronSchedule: 0 0 * * *
 
+# use this for s3 secret for the secret
+s3: 
+  existingSecret:
+
+azure:
+  existingSecret:
+
+slack: 
+  existingSecret:
+
+teams:
+  existingSecret: teams-secret
+
+mySql:
+  existingSecret:
+
 appSettings:
   MySql:
-    ConnectionString: 
-    ExistingSecret:
+    # ConnectionString: 
   Backup:
     BasePath: mysql_backups
-    Databases: *
+    Databases: "*"
   Retention:
     Enabled: false
     Days: 0
@@ -59,21 +74,17 @@ appSettings:
     Endpoint: http://yours3endpointurl
     BucketName:
     AccessKey:
-    Secret:
-    ExistingSecret:
+    # Secret: use this or s3.existingSecret 
     Minio: false
   Azure: 
     Enabled: false
-    ConnectionString:
-    ExistingSecret:
+    # ConnectionString: use this or azure.existingSecret
   Physical:
     Enabled: false
   Slack:
     Enabled: false
-    Webhook: 
-    ExistingSecret: 
+    # Webhook: use this or slack existing secret
   Teams:
     Enabled: false
-    Webhook:
-    ExistingSecret:
+    # Webhook: use this or slack existing secret.
   

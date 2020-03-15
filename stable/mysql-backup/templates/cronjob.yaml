@@ -1,0 +1,62 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "mysql-backup.fullname" . }}
+spec:
+  schedule: "{{ .Values.cronSchedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec: 
+          restartPolicy: Never
+          containers:
+            - name: {{ include "mysql-backup.fullname" . }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              volumeMounts:
+              - name: app-settings
+                mountPath: /app/appsettings.json
+                subPath: appsettings.json
+              env:
+                {{ if .Values.s3.existingSecret }}
+                - name: S3__Secret
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.s3.existingSecret }}
+                      key: s3.secret
+                {{ end }}
+                {{ if .Values.azure.existingSecret }}
+                - name: Azure__ConnectionString
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.azure.existingSecret }}
+                      key: azure.connectionString
+                {{ end }}
+                {{ if .Values.slack.existingSecret }}
+                - name: Slack__Webhook
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.slack.existingSecret }}
+                      key: slack.webhook
+                {{ end }}
+                {{ if .Values.teams.existingSecret }}
+                - name: Teams__Webhook
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.teams.existingSecret }}
+                      key: teams.webhook
+                {{ end }}
+                {{ if .Values.mySql.existingSecret }}
+                - name: MySql__ConnectionString
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mySql.existingSecret }}
+                      key: mySql.connectionString
+                {{ end }}
+          volumes:
+            - name: app-settings
+              configMap:
+                name: {{ include "mysql-backup.fullname" . }}
+                items:
+                  - key: appSettings
+                    path: appsettings.json
