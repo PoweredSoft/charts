@@ -54,7 +54,7 @@ slack:
   existingSecret:
 
 teams:
-  existingSecret: teams-secret
+  existingSecret: 
 
 mySql:
   existingSecret:
