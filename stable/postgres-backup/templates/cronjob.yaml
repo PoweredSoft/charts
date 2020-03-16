@@ -1,0 +1,62 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "postgres-backup.fullname" . }}
+spec:
+  schedule: "{{ .Values.cronSchedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec: 
+          restartPolicy: Never
+          containers:
+            - name: {{ include "postgres-backup.fullname" . }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              volumeMounts:
+              - name: app-settings
+                mountPath: /app/appsettings.json
+                subPath: appsettings.json
+              env:
+                {{ if .Values.s3.existingSecret }}
+                - name: S3__Secret
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.s3.existingSecret }}
+                      key: {{ .Values.s3.secretSecretKey }}
+                {{ end }}
+                {{ if .Values.azure.existingSecret }}
+                - name: Azure__ConnectionString
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.azure.existingSecret }}
+                      key: {{ .Values.azure.connectionStringSecretKey }}
+                {{ end }}
+                {{ if .Values.slack.existingSecret }}
+                - name: Slack__Webhook
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.slack.existingSecret }}
+                      key: {{ .Values.slack.webhookSecretKey }}
+                {{ end }}
+                {{ if .Values.teams.existingSecret }}
+                - name: Teams__Webhook
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.teams.existingSecret }}
+                      key: {{ .Values.teams.webhookSecretKey }}
+                {{ end }}
+                {{ if .Values.postgres.existingSecret }}
+                - name: Postgres__Password
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.postgres.existingSecret }}
+                      key: {{ .Values.postgres.passwordSecretKey }}
+                {{ end }}
+          volumes:
+            - name: app-settings
+              configMap:
+                name: {{ include "postgres-backup.fullname" . }}
+                items:
+                  - key: appSettings
+                    path: appsettings.json

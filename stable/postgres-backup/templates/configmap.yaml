@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "postgres-backup.fullname" . }}
+data:
+  appSettings: |
+    {{ .Values.appSettings | toJson }}
