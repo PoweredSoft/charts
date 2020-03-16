@@ -46,18 +46,23 @@ cronSchedule: 0 0 * * *
 # use this for s3 secret for the secret
 s3: 
   existingSecret:
+  secretSecretKey: s3.secret
 
 azure:
   existingSecret:
+  connectionStringSecretKey: s3.connectionString
 
 slack: 
   existingSecret:
+  webhookSecretKey: slack.webhook
 
 teams:
   existingSecret: 
+  webhookSecretKey: teams.webhook
 
 mySql:
   existingSecret:
+  connectionStringSecretKey: mySql.connectionString
 
 appSettings:
   MySql:

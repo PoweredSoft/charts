@@ -23,35 +23,35 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.s3.existingSecret }}
-                      key: s3.secret
+                      key: {{ .Values.s3.secretSecretKey }}
                 {{ end }}
                 {{ if .Values.azure.existingSecret }}
                 - name: Azure__ConnectionString
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.azure.existingSecret }}
-                      key: azure.connectionString
+                      key: {{ .Values.azure.connectionStringSecretKey }}
                 {{ end }}
                 {{ if .Values.slack.existingSecret }}
                 - name: Slack__Webhook
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.slack.existingSecret }}
-                      key: slack.webhook
+                      key: {{ .Values.slack.webhookSecretKey }}
                 {{ end }}
                 {{ if .Values.teams.existingSecret }}
                 - name: Teams__Webhook
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.teams.existingSecret }}
-                      key: teams.webhook
+                      key: {{ .Values.teams.webhookSecretKey }}
                 {{ end }}
                 {{ if .Values.mySql.existingSecret }}
                 - name: MySql__ConnectionString
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.mySql.existingSecret }}
-                      key: mySql.connectionString
+                      key: {{ .Values.mySql.connectionStringSecretKey }}
                 {{ end }}
           volumes:
             - name: app-settings
