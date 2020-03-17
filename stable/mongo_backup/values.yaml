@@ -1,0 +1,98 @@
+# Default values for mongo-backup.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+image:
+  repository: poweredsoft/docker-mongo-backup
+  pullPolicy: IfNotPresent
+  tag: 1.0.0-alpha
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+cronSchedule: 0 0 * * *
+
+# use this for s3 secret for the secret
+s3: 
+  existingSecret:
+  secretSecretKey: s3.secret
+
+azure:
+  existingSecret:
+  connectionStringSecretKey: s3.connectionString
+
+slack: 
+  existingSecret:
+  webhookSecretKey: slack.webhook
+
+teams:
+  existingSecret: 
+  webhookSecretKey: teams.webhook
+
+mongo:
+  existingSecret:
+  passwordSecretKey: mongo.password
+
+appSettings:
+  Postgres:
+    Host:
+    Port: 5432
+    User: root
+    # Password: password to be used or secret.
+  Backup:
+    BasePath: mongo_backups
+    Databases: "*"
+  Retention:
+    Enabled: false
+    Days: 0
+    Months: 0
+  S3:
+    Enabled: false
+    Endpoint: http://yours3endpointurl
+    BucketName:
+    AccessKey:
+    # Secret: use this or s3.existingSecret 
+    Minio: false
+  Azure: 
+    Enabled: false
+    # ConnectionString: use this or azure.existingSecret
+  Physical:
+    Enabled: false
+  Slack:
+    Enabled: false
+    # Webhook: use this or slack existing secret
+  Teams:
+    Enabled: false
+    # Webhook: use this or slack existing secret.
+  
