@@ -65,9 +65,9 @@ mongo:
   passwordSecretKey: mongo.password
 
 appSettings:
-  Postgres:
+  Mongo:
     Host:
-    Port: 5432
+    Port: 27017
     User: root
     # Password: password to be used or secret.
   Backup:
