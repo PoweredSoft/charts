@@ -47,11 +47,11 @@ spec:
                       key: {{ .Values.teams.webhookSecretKey }}
                 {{ end }}
                 {{ if .Values.mongo.existingSecret }}
-                - name: Mongo__Password
+                - name: Mongo__ConnectionString
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.mongo.existingSecret }}
-                      key: {{ .Values.mongo.passwordSecretKey }}
+                      key: {{ .Values.mongo.connectionStringSecretKey }}
                 {{ end }}
           volumes:
             - name: app-settings
