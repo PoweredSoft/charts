@@ -6,7 +6,7 @@
 image:
   repository: poweredsoft/docker-mongo-backup
   pullPolicy: IfNotPresent
-  tag: 1.0.0-alpha
+  tag: 1.0.1
 
 imagePullSecrets: []
 nameOverride: ""
@@ -62,14 +62,11 @@ teams:
 
 mongo:
   existingSecret:
-  passwordSecretKey: mongo.password
+  connectionStringSecretKey: mongo.password
 
 appSettings:
   Mongo:
-    Host:
-    Port: 27017
-    User: root
-    # Password: password to be used or secret.
+    # ConnectionString: connections tring
   Backup:
     BasePath: mongo_backups
     Databases: "*"
